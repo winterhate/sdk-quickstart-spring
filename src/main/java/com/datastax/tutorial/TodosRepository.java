@@ -5,6 +5,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
-public interface TodosRepository extends CassandraRepository<Todos, UUID> {
-    List<Todos> findAllByCompleted(boolean isCompleted, Pageable pageable);
+public interface TodosRepository extends CassandraRepository<Todo, UUID> {
+    List<Todo> findAllByCompleted(boolean isCompleted, Pageable pageable);
 }

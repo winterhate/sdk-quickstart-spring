@@ -37,9 +37,9 @@ public class QuickStartSpring {
 	@PostConstruct
 	public void insertTodos() {
 		todosRepository.deleteAll();
-		todosRepository.save(new Todos("Create Spring Project"));
-		todosRepository.save(new Todos("Setup Astra Starter"));
-		todosRepository.save(new Todos("Setup Spring Starter"));
+		todosRepository.save(new Todo("Create Spring Project"));
+		todosRepository.save(new Todo("Setup Astra Starter"));
+		todosRepository.save(new Todo("Setup Spring Starter"));
 	}
 
 	@GetMapping("/")
@@ -48,30 +48,30 @@ public class QuickStartSpring {
 	}
 
 	@GetMapping("/todos")
-	public List<Todos> todos() {
+	public List<Todo> todos() {
 		return todosRepository.findAll(CassandraPageRequest.first(10)).toList();
 	}
 
 	@GetMapping("/todos/open")
-	public List<Todos> todosOpen() {
+	public List<Todo> todosOpen() {
 		return todosRepository.findAllByCompleted(false, CassandraPageRequest.first(10));
 	}
 
 	@DeleteMapping("/todos")
-	public List<Todos> deleteAll() {
+	public List<Todo> deleteAll() {
 		todosRepository.deleteAll();
 		return List.of();
 	}
 
 	@DeleteMapping("/todos/{id}")
-	public List<Todos> deleteById(@PathVariable final String id) {
+	public List<Todo> deleteById(@PathVariable final String id) {
 		todosRepository.deleteById(UUID.fromString(id));
 		return List.of();
 	}
 
 	@PutMapping("/todos")
-	public Todos putTodo(@RequestBody final TodoApi todoApi) {
-		final var todo = new Todos(todoApi.title());
+	public Todo putTodo(@RequestBody final TodoApi todoApi) {
+		final var todo = new Todo(todoApi.title());
 		todosRepository.save(todo);
 		return todo;
 	}
@@ -84,7 +84,7 @@ public class QuickStartSpring {
 	}
 
 	@PostMapping("/todos/{id}/finish")
-	public Todos finish(@PathVariable final UUID id) {
+	public Todo finish(@PathVariable final UUID id) {
 		return todosRepository.findById(id).map(todo -> {
 			todo.setCompleted(true);
 			todosRepository.save(todo);
@@ -94,7 +94,7 @@ public class QuickStartSpring {
 	}
 
 	@PostMapping("/todos/finish")
-	public List<Todos> finishAll() {
+	public List<Todo> finishAll() {
 		return todosRepository.findAll().stream().peek(todo -> {
 			todo.setCompleted(true);
 			todosRepository.save(todo);

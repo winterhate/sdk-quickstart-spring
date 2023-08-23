@@ -8,8 +8,8 @@ import org.springframework.data.cassandra.core.mapping.Table;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-@Table
-public class Todos {
+@Table("todos")
+public class Todo {
 
     @PrimaryKey
     @CassandraType(type = CassandraType.Name.UUID)
@@ -20,10 +20,10 @@ public class Todos {
     @Indexed
     private boolean completed = false;
 
-    public Todos() {
+    public Todo() {
     }
 
-    public Todos(String title) {
+    public Todo(String title) {
         this.title = title;
     }
 
@@ -50,5 +50,5 @@ public class Todos {
     public void setCompleted(final boolean completed) {
         this.completed = completed;
     }
-}
 
+}
