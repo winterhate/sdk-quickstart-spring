@@ -1,19 +1,23 @@
 package com.datastax.tutorial;
 
 import org.springframework.data.cassandra.core.mapping.CassandraType;
+import org.springframework.data.cassandra.core.mapping.Indexed;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @Table
 public class Todos {
+
     @PrimaryKey
     @CassandraType(type = CassandraType.Name.UUID)
     private UUID uid = UUID.randomUUID();
 
     private String title;
 
+    @Indexed
     private boolean completed = false;
 
     public Todos() {
