@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -68,6 +69,8 @@ public class QuickStartSpring {
 		todosRepository.deleteById(UUID.fromString(id));
 		return List.of();
 	}
+
+	record TodoApi(@JsonProperty("title") String title) {}
 
 	@PutMapping("/todos")
 	public Todo putTodo(@RequestBody final TodoApi todoApi) {
