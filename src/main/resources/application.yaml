@@ -21,8 +21,8 @@ spring:
 astra:
   api:
     application-token: ${ASTRA_APPLICATION_TOKEN}
-    database-id: 3ed03fe0-3917-4e14-9461-69db565c3589
-    database-region: westeurope
+    database-id: ${ASTRA_DATABASE_ID}
+    database-region: ${ASTRA_DATABASE_REGION}
     cross-region-failback: false
     grpc:
       enabled: true
