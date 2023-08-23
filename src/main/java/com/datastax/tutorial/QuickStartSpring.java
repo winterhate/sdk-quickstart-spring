@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -112,7 +113,18 @@ public class QuickStartSpring {
 				.queryForObject("SELECT data_center FROM system.local", String.class);
 	}
 
+	private static final Set<String> REQUIRED_ENVIRONMENT_PROPERTIES = Set.of("ASTRA_APPLICATION_TOKEN", "ASTRA_DATABASE_ID", "ASTRA_DATABASE_REGION");
+
+	private static void validateRequiredEnvironmentProperties() {
+		REQUIRED_ENVIRONMENT_PROPERTIES.forEach(property -> {
+			if (System.getenv(property) == null) {
+				throw new RuntimeException(String.format("Missing environment property: %s", property));
+			}
+		});
+	}
+
 	public static void main(String[] args) {
+		validateRequiredEnvironmentProperties();
 		SpringApplication.run(QuickStartSpring.class, args);
 	}
 }
