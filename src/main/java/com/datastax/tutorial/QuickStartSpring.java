@@ -1,6 +1,8 @@
 package com.datastax.tutorial;
 
 import com.datastax.astra.sdk.AstraClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.cassandra.core.CassandraTemplate;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 @RestController
 @SpringBootApplication
 public class QuickStartSpring {
+
+	private static final Logger log = LoggerFactory.getLogger(QuickStartSpring.class);
 
 	private final AstraClient astraClient;
 	private final TodosRepository todosRepository;
@@ -94,7 +98,8 @@ public class QuickStartSpring {
 			todosRepository.save(todo);
 			return todo;
 		})
-		.orElseThrow(() -> new NotFound(String.format("Todo[id=%s] not found", id)));
+		.orElseThrow(() -> new NotFound("""
+			Todo[id=%s] not found""".formatted(id)));
 	}
 
 	@PostMapping("/todos/finish")
@@ -118,7 +123,10 @@ public class QuickStartSpring {
 	private static void validateRequiredEnvironmentProperties() {
 		REQUIRED_ENVIRONMENT_PROPERTIES.forEach(property -> {
 			if (System.getenv(property) == null) {
-				throw new RuntimeException(String.format("Missing environment property: %s", property));
+				log.error("""
+						Expecting connection info in environment; define %s""".formatted(String.join(", ", REQUIRED_ENVIRONMENT_PROPERTIES)));
+				throw new RuntimeException(String.format("""
+						Missing environment property: %s""".formatted(property)));
 			}
 		});
 	}
@@ -127,4 +135,5 @@ public class QuickStartSpring {
 		validateRequiredEnvironmentProperties();
 		SpringApplication.run(QuickStartSpring.class, args);
 	}
+
 }
