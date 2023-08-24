@@ -16,7 +16,7 @@ management:
 spring:
   data:
     cassandra:
-      schema-action: CREATE_IF_NOT_EXISTS
+      schema-action: RECREATE
 
 astra:
   api:
